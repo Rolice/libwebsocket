@@ -54,9 +54,9 @@ std::string WebSocket::AcceptKey(std::string key)
 	if(key.empty())
 		return result;
 
-	key += "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";         //RFC6544_MAGIC_KEY
+	key += "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";         // RFC6544_MAGIC_KEY
 
-	unsigned char digest[20];                              // 160-bit SHA1 hash
+	unsigned char digest[20];                              // 160-bit SHA1 hash container
 	SHA1 sha;
 
 	sha.Input(key.data(), key.size());
