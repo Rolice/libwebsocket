@@ -3,7 +3,7 @@
 
 #include <errno.h>
 
-#define		__DEBUG__                  TRUE
+#define __DEBUG__                      TRUE
 
 typedef byte                           unsigned char
 
