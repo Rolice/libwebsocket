@@ -10,6 +10,8 @@ Current status is that the library is making successful Handshake with clients (
 
 The library is being developed for another app, again, for Raspberry Pi, where the threading is handled, but it might worth to pass the threading and polling here and to encapsulate the process of WebSocket communication.
 
+The library is currently under development for one platform, but it might be easily ported in future. There might be a Windows implementation as well.
+
 Here are some repositories I have observed and borrowed some code from:
 
 * https://github.com/katzarsky/WebSocket
