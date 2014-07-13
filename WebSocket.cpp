@@ -1,5 +1,8 @@
 #include "WebSocket.hpp"
 
+namespace ws
+{
+
 WebSocket::WebSocket(int server, struct sockaddr_in *server_addr, int client, struct sockaddr_in *client_addr)
 {
 	m_server = server;
@@ -28,8 +31,6 @@ WebSocket::WebSocket(int server, struct sockaddr_in *server_addr, int client, st
 	m_protocol = req->GetHeader("Sec-WebSocket-Protocol");
 	m_key = req->GetHeader("Sec-WebSocket-Key");
 	m_accept = AcceptKey();
-
-	Debug::Info(sizeof(Frame));
 
 	Debug::Info("Handshake received.");
 }
@@ -118,4 +119,6 @@ void WebSocket::Listen()
 void WebSocket::Process(std::string message)
 {
 	std::cout << message << std::endl << std::endl;
+}
+
 }

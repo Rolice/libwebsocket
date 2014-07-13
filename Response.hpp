@@ -14,7 +14,11 @@
 #include "Debug.hpp"
 #include "HttpMessage.hpp"
 
-class Response : public HttpMessage {
+namespace ws
+{
+
+class Response : public HttpMessage
+{
 
 protected:
 	std::string                        m_version;
@@ -27,5 +31,7 @@ public:
 	virtual ~Response();
 
 };
+
+}
 
 #endif

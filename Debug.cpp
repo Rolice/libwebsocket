@@ -1,5 +1,8 @@
 #include "Debug.hpp"
 
+namespace ws
+{
+
 void Debug::Write(const char *text)
 {
 	#ifdef __DEBUG__
@@ -60,4 +63,6 @@ void Debug::Error(const char *text)
 void Debug::Error(const char *text, int code)
 {
 	Debug::ColorTag("ERROR", text, CONSOLE_COLOR_BOLDRED, code);
+}
+
 }

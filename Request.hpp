@@ -14,6 +14,9 @@
 #include "Debug.hpp"
 #include "HttpMessage.hpp"
 
+namespace ws
+{
+
 class Request : public HttpMessage {
 
 protected:
@@ -27,5 +30,7 @@ public:
 	virtual ~Request();
 	
 };
+
+}
 
 #endif

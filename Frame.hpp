@@ -3,6 +3,9 @@
 
 #define MAX_PAYLOAD_LENGTH              0x7FFFFFFFFFFFFFFF;
 
+namespace ws
+{
+
 struct Frame
 {
 	// RFC 6455 OpCodes
@@ -53,5 +56,7 @@ struct Frame
 
 	unsigned short extended            : 16;
 };
+
+}
 
 #endif

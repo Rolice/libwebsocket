@@ -1,14 +1,18 @@
 #ifndef __DEBUG_HPP__
 #define __DEBUG_HPP__
 
+#include "include/global.hpp"
+#include "include/console.hpp"
+
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
 
-#include "include/global.hpp"
-#include "include/console.hpp"
+namespace ws
+{
 
-class Debug {
+class Debug
+{
 
 public:
 	static void Write(const char *text);
@@ -23,6 +27,9 @@ public:
 	static void Warn(const char *text);
 	static void Error(const char *text);
 	static void Error(const char *text, int code);
+
 };
+
+}
 
 #endif

@@ -13,7 +13,11 @@
 
 #include "Debug.hpp"
 
-class HttpMessage {
+namespace ws
+{
+
+class HttpMessage
+{
 
 protected:
 	std::string m_control_line;
@@ -34,5 +38,7 @@ public:
 	virtual std::string ToString();
 
 };
+
+}
 
 #endif

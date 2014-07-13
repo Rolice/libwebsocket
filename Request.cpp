@@ -1,5 +1,8 @@
 #include "Request.hpp"
 
+namespace ws
+{
+
 Request::Request()
 {
 	m_valid = false;
@@ -38,4 +41,6 @@ Request::Request(const char *content) : HttpMessage(content)
 
 Request::~Request()
 {
+}
+
 }

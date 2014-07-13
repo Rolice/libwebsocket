@@ -1,5 +1,8 @@
 #include "HttpMessage.hpp"
 
+namespace ws
+{
+
 HttpMessage::HttpMessage()
 {
 }
@@ -106,4 +109,6 @@ std::string HttpMessage::ToString()
 	result += m_body;
 
 	return result;
+}
+
 }

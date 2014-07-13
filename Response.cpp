@@ -1,5 +1,8 @@
 #include "Response.hpp"
 
+namespace ws
+{
+
 Response::Response()
 {
 	m_length = 0;
@@ -39,4 +42,6 @@ Response::Response(const char *content) : HttpMessage(content)
 
 Response::~Response()
 {
+}
+
 }
