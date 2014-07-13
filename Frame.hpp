@@ -1,7 +1,16 @@
 #ifndef __FRAME_HPP__
 #define __FRAME_HPP__
 
-#define MAX_PAYLOAD_LENGTH              0x7FFFFFFFFFFFFFFF;
+#include <string>
+#include <vector>
+
+#define MAX_PAYLOAD_LENGTH             0x7FFFFFFFFFFFFFFF;
+
+#define PAYLOAD_SIZE_DEFAULT           125;
+#define PAYLOAD_SIZE_EXTRA_WORD        126;
+#define PAYLOAD_SIZE_EXTRA_QWORD	   127;
+
+typedef unsigned int                   FrameMask;
 
 namespace ws
 {
@@ -11,7 +20,7 @@ struct Frame
 	// RFC 6455 OpCodes
 	enum Type
 	{
-		CONTINUE                       = 0x0,
+		CONTINIUATION                  = 0x0,
 		TEXT                           = 0x1,
 		BINARY                         = 0x2,
 
@@ -44,17 +53,32 @@ struct Frame
         Error
     };
 
-	bool fin                           : 1;
+	bool final                         : 1;
 	bool rsv1                          : 1;
 	bool rsv2                          : 1;
 	bool rsv3                          : 1;
 
 	Type opcode                        : 4;
 
-	unsigned bool mask                 : 1;
+	bool masked                        : 1;
 	unsigned short length              : 7;
 
 	unsigned short extended            : 16;
+
+	char *payload;
+
+
+	bool IsControl();
+	bool IsNonControl();
+	bool IsReserved();
+
+	bool Extended();
+
+	static ParseResult Parse(char *data, size_t length, Frame &taget, const char *end, std::string reason);
+
+	Frame(Type opcode, bool final, bool masked, const char *payload, size_t length);
+	void MakeData(std::vector<char> &data);
+
 };
 
 }
