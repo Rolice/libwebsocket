@@ -17,4 +17,7 @@ Here are some repositories I have observed and borrowed some code from:
 
 
 The project is three days old, and idea for separate library came today.
+
 The code might look ugly and the library lacks implementation for C linkage, but it will be improved (in time) and such C linkage implementation probably may appear with the advance of the project.
+
+Any advices and suggestions are welcome!
