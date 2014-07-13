@@ -5,6 +5,6 @@
 
 #define __DEBUG__                      TRUE
 
-typedef byte                           unsigned char
+typedef unsigned char                  byte
 
 #endif
