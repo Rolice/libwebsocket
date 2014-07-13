@@ -15,6 +15,8 @@ Here are some repositories I have observed and borrowed some code from:
 * https://github.com/katzarsky/WebSocket
 * https://github.com/WebKit/webkit
 
-You are welcome, if you would like to join in the project. I am not a professional system developer so it would not be so hard to suggest or apply some optimizations and improvements.
 
-The library lacks implementation for C linkage, but probably with the advance of the project such may appear.
+The project is three days old, and idea for separate library came today.
+The code might look ugly and the library lacks implementation for C linkage, but it will be improved (in time) and such C linkage implementation probably may appear with the advance of the project.
+
+You are welcome, if you would like to join in the project.
