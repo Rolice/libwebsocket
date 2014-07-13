@@ -4,7 +4,7 @@ libwebsocket
 Experimental C++ WebSocket Server Library
 
 
-The library is being developed and tested on Raspberry Pi. It is experimental and in process of implementation against *RFC 6455*. Propositions and advices are welcome.
+The library is being developed and tested on Raspberry Pi. It is experimental and in process of implementation against [**RFC 6455**]{http://tools.ietf.org/html/rfc6455}. Propositions and advices are welcome.
 
 Current status is that the library is making successful Handshake with clients (browsers). Now the WebSocket frames are being implemented, but they are lacking rich documentation, so I refer to outer repos.
 
