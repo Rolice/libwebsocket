@@ -3,8 +3,8 @@
 
 #include <errno.h>
 
-#typedef byte unsigned char
+#define		__DEBUG__                  TRUE
 
-#define		__DEBUG__					TRUE
+typedef byte                           unsigned char
 
 #endif

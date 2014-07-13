@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "include/global.hpp"
-#include "exinclude/console.hpp"
+#include "include/console.hpp"
 
 class Debug {
 
