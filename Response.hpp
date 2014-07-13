@@ -17,9 +17,9 @@
 class Response : public HttpMessage {
 
 protected:
-	std::string		m_version;
-	unsigned int	m_status;
-	std::string		m_reason;
+	std::string                        m_version;
+	unsigned int                       m_status;
+	std::string                        m_reason;
 
 public:
 	Response();

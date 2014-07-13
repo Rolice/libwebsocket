@@ -17,9 +17,9 @@
 class Request : public HttpMessage {
 
 protected:
-	std::string		m_method;
-	std::string		m_uri;
-	std::string		m_version;
+	std::string                        m_method;
+	std::string                        m_uri;
+	std::string                        m_version;
 
 public:
 	Request();

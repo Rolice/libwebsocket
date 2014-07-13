@@ -65,13 +65,13 @@ std::string WebSocket::AcceptKey(std::string key)
 	// Little to Big Endian
 	for(unsigned int i = 0; i < sizeof(digest); i += 4)
 	{
-		digest[i]		^= digest[i + 3];
-		digest[i + 3]	^= digest[i];
-		digest[i]		^= digest[i + 3];
+		digest[i]        ^= digest[i + 3];
+		digest[i + 3]    ^= digest[i];
+		digest[i]        ^= digest[i + 3];
 
-		digest[i + 1]	^= digest[i + 2];
-		digest[i + 2]	^= digest[i + 1];
-		digest[i + 1]	^= digest[i + 2];
+		digest[i + 1]    ^= digest[i + 2];
+		digest[i + 2]    ^= digest[i + 1];
+		digest[i + 1]    ^= digest[i + 2];
 	}
 
 	result = base64_encode((const unsigned char *) digest, sizeof(digest));
