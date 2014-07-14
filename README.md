@@ -15,10 +15,10 @@ The library is being developed for another executable, again, for *Raspberry Pi*
 
 The library is currently under development for one platform, but it might be easily ported in future. There might be a Windows implementation as well.
 
-Inspiration and Additional Resources
-------------------------------------
+Inspiration and More Information + Code
+---------------------------------------
 
-Here are some repositories I have observed and borrowed some code from:
+Here are some repositories I have inspected and borrowed some ideas, code or flow from:
 
 * https://github.com/katzarsky/WebSocket
 * https://github.com/WebKit/webkit
