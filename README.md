@@ -18,7 +18,7 @@ The library is currently under development for one platform, but it might be eas
 Inspiration and More Information + Code
 ---------------------------------------
 
-Here are some repositories I have inspected and borrowed some ideas, code or logic from:
+Here are some repositories I have inspected and borrowed some ideas, code or pure logical flow from:
 
 * https://github.com/katzarsky/WebSocket
 * https://github.com/WebKit/webkit
