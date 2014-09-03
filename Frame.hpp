@@ -1,6 +1,8 @@
 #ifndef __FRAME_HPP__
 #define __FRAME_HPP__
 
+#include "include/global.hpp"
+
 #include <string>
 #include <vector>
 
@@ -17,20 +19,20 @@ namespace ws
 
 struct Frame
 {
-	const byte FinalBit = 0x80;
-	const byte ReservedBit1 = 0x40; // Compress Extension
-	const byte ReservedBit2 = 0x20;
-	const byte ReservedBit3 = 0x10;
-	const byte TypeMask = 0x0F;
-	const byte MaskBit = 0x80;
-	const byte PayloadLengthMask = 0x7F;
+	static const byte FinalBit = 0x80;
+	static const byte ReservedBit1 = 0x40; // Compress Extension
+	static const byte ReservedBit2 = 0x20;
+	static const byte ReservedBit3 = 0x10;
+	static const byte TypeMask = 0x0F;
+	static const byte MaskBit = 0x80;
+	static const byte PayloadLengthMask = 0x7F;
 
-	const int FrameMinSize = 2;
-	const int MaskKeySize = 4;
+	static const int FrameMinSize = 2;
+	static const int MaskKeySize = 4;
 
-	const int PayloadSizeDefault = 125;
-	const int PayloadSizeExtraWord = 126;
-	const int PayloadSizeExtraQWord = 127;
+	static const int PayloadSizeDefault = 125;
+	static const int PayloadSizeExtraWord = 126;
+	static const int PayloadSizeExtraQWord = 127;
 
 	// RFC 6455 OpCodes
 	enum Type

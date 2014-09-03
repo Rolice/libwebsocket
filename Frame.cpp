@@ -49,12 +49,12 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 	byte first = *p++;
 	byte second = *p++;
 
-	frame.final = first & FirstBit;
-	frame.rsv1 = first & ReservedBit1;
-	frame.rsv2 = first & ReservedBit2;
-	frame.rsv3 = first & ReservedBit3;
-	frame.opcode = static_cast<Frame::Type>(first & TypeMask);
-	frame.masked = second & MaskBit;
+	target.final = first & Frame::FinalBit;
+	target.rsv1 = first & Frame::ReservedBit1;
+	target.rsv2 = first & Frame::ReservedBit2;
+	target.rsv3 = first & Frame::ReservedBit3;
+	target.opcode = static_cast<Frame::Type>(first & Frame::TypeMask);
+	target.masked = second & Frame::MaskBit;
 
 	return OK;
 }
