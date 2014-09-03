@@ -61,10 +61,10 @@ struct Frame
 
 	enum ParseResult
 	{
-        OK,
-        Incomplete,
-        Error
-    };
+		OK,
+		Incomplete,
+		Error
+	};
 
 	bool final                         : 1;
 	bool rsv1                          : 1;
