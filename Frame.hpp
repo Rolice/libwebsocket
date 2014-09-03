@@ -8,7 +8,7 @@
 
 #define PAYLOAD_SIZE_DEFAULT           125;
 #define PAYLOAD_SIZE_EXTRA_WORD        126;
-#define PAYLOAD_SIZE_EXTRA_QWORD	   127;
+#define PAYLOAD_SIZE_EXTRA_QWORD       127;
 
 typedef unsigned int                   FrameMask;
 
@@ -17,6 +17,21 @@ namespace ws
 
 struct Frame
 {
+	const byte FinalBit = 0x80;
+	const byte ReservedBit1 = 0x40; // Compress Extension
+	const byte ReservedBit2 = 0x20;
+	const byte ReservedBit3 = 0x10;
+	const byte TypeMask = 0x0F;
+	const byte MaskBit = 0x80;
+	const byte PayloadLengthMask = 0x7F;
+
+	const int FrameMinSize = 2;
+	const int MaskKeySize = 4;
+
+	const int PayloadSizeDefault = 125;
+	const int PayloadSizeExtraWord = 126;
+	const int PayloadSizeExtraQWord = 127;
+
 	// RFC 6455 OpCodes
 	enum Type
 	{
@@ -74,8 +89,9 @@ struct Frame
 
 	bool Extended();
 
-	static ParseResult Parse(char *data, size_t length, Frame &taget, const char *end, std::string reason);
+	static ParseResult Parse(char *data, size_t length, Frame &target, const char *end, std::string reason);
 
+	Frame();
 	Frame(Type opcode, bool final, bool masked, const char *payload, size_t length);
 	void MakeData(std::vector<char> &data);
 

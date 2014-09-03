@@ -20,7 +20,11 @@ bool Frame::IsReserved()
 
 bool Frame::Extended()
 {
-	return length > PAYLOAD_SIZE_DEFAULT;
+	return PayloadSizeDefault < length;
+}
+
+Frame::Frame()
+{
 }
 
 Frame::Frame(Frame::Type opcode, bool final, bool masked, const char *payload, size_t length)
@@ -33,6 +37,26 @@ Frame::Frame(Frame::Type opcode, bool final, bool masked, const char *payload, s
 	, payload(const_cast<char *>(payload))
 	, length(length)
 {
+}
+
+Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const char *end, std::string reason)
+{
+	if(FrameMinSize >= length)
+		return Incomplete;
+
+	char *p = data;
+
+	byte first = *p++;
+	byte second = *p++;
+
+	frame.final = first & FirstBit;
+	frame.rsv1 = first & ReservedBit1;
+	frame.rsv2 = first & ReservedBit2;
+	frame.rsv3 = first & ReservedBit3;
+	frame.opcode = static_cast<Frame::Type>(first & TypeMask);
+	frame.masked = second & MaskBit;
+
+	return OK;
 }
 
 }
