@@ -8,10 +8,6 @@
 
 #define MAX_PAYLOAD_LENGTH             0x7FFFFFFFFFFFFFFF;
 
-#define PAYLOAD_SIZE_DEFAULT           125;
-#define PAYLOAD_SIZE_EXTRA_WORD        126;
-#define PAYLOAD_SIZE_EXTRA_QWORD       127;
-
 typedef unsigned int                   FrameMask;
 
 namespace ws
