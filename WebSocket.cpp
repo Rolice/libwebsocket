@@ -3,8 +3,56 @@
 namespace ws
 {
 
+WebSocket::WebSocket()
+{
+	m_running = false;
+	m_server = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+
+	if(0 > m_server)
+	{
+		Debug::Error("Could not create socket.");
+		exit(ERR_NETWORK);
+	}
+
+	int opt = YES;
+
+	if(0 > setsockopt(m_server, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(int)))
+	{
+		Debug::Error("Socket reuse setup failed.", errno);
+		exit(ERR_NETWORK);
+	}
+
+	if(0 > setsockopt(m_server, SOL_SOCKET, SO_KEEPALIVE, &opt, sizeof(int)))
+	{
+		Debug::Error("Socket keep alive setup failed.", errno);
+		exit(ERR_NETWORK);
+	}
+
+	struct sockaddr_in server_addr;
+
+	memset(&server_addr, 0, sizeof(server_addr));
+
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_addr.s_addr = INADDR_ANY;
+	server_addr.sin_port = htons(SOCK_PORT);
+
+	int binding = bind(m_server, (struct sockaddr *) &server_addr, sizeof(server_addr));
+
+	if(0 > binding)
+	{
+		Debug::Error("Could not bind socket.");
+		return;
+	}
+
+	m_server_addr = &server_addr;
+
+	m_running = true;
+}
+
 WebSocket::WebSocket(int server, struct sockaddr_in *server_addr, int client, struct sockaddr_in *client_addr)
 {
+	m_running = false;
+
 	m_server = server;
 	m_client = client;
 
@@ -33,10 +81,13 @@ WebSocket::WebSocket(int server, struct sockaddr_in *server_addr, int client, st
 	m_accept = AcceptKey();
 
 	Debug::Info("Handshake received.");
+
+	m_running = true;
 }
 
 WebSocket::~WebSocket()
 {
+	m_running = false;
 }
 
 std::string WebSocket::AcceptKey()
@@ -103,22 +154,79 @@ void WebSocket::Handshake()
 	Debug::Info("Handshake accepted.");
 }
 
+void WebSocket::ParseHandshake()
+{
+	char request[65535];
+	int request_length = 0;
+
+	memset(request, 0, sizeof(request));
+
+	request_length = read(m_client, request, sizeof(request));
+
+	if(0 >= request_length)
+	{
+		Debug::Warn("Request with no data ignored.");
+		return;
+	}
+
+	Request *req = new Request(request);
+
+	m_host = req->GetHeader("Host");
+	m_origin = req->GetHeader("Origin");
+	m_protocol = req->GetHeader("Sec-WebSocket-Protocol");
+	m_key = req->GetHeader("Sec-WebSocket-Key");
+	m_accept = AcceptKey();
+}
+
 void WebSocket::Listen()
 {
 	int in = 0;
 	int max = 65535;
 	char buffer[max];
 
-	while((in = recv(m_client, &buffer, max , 0)))
+	while(m_running && (in = recv(m_client, &buffer, max , 0)))
 	{
 		std::string message(buffer);
 		Process(message);
 	}
 }
 
+void WebSocket::Listen(bool x)
+{
+	int client_len = sizeof(struct sockaddr_in);
+
+	listen(m_server, SOCK_BACKLOG);
+
+	while(m_running && 0 <= (m_client = accept(m_server, (struct sockaddr *) m_client_addr, (socklen_t *) &client_len)))
+	{
+		ParseHandshake();
+		Handshake();
+
+		int in = 0;
+		int max = 65535;
+		char buffer[max];
+
+		while(m_running && (in = recv(m_client, &buffer, max, 0)))
+		{
+			struct Frame *frame;
+			//int result = Frame::Parse(buffer, sizeof(buffer), frame, "ASDASD", "Test");
+
+			std::string message(buffer);
+			Process(message);
+
+			memset(&buffer, 0, sizeof(buffer));
+		}
+	}
+}
+
 void WebSocket::Process(std::string message)
 {
 	std::cout << message << std::endl << std::endl;
+}
+
+void WebSocket::Stop()
+{
+	m_running = false;
 }
 
 }
