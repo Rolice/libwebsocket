@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <inttypes.h>
+
 #define MAX_PAYLOAD_LENGTH             0x7FFFFFFFFFFFFFFF;
 
 typedef unsigned int                   FrameMask;

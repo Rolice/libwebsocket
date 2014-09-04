@@ -45,9 +45,42 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 		return Incomplete;
 
 	char *p = data;
+	const char *bufferEnd = data + length;
 
 	byte first = *p++;
 	byte second = *p++;
+
+	uint64_t payload_length = second & PayloadLengthMask;
+
+	if(PayloadSizeDefault <  payload_length)
+	{
+		int extended = PayloadSizeExtraWord == length ? 2 : 8;
+
+		if(bufferEnd - p < extended)
+			return Incomplete;
+
+		payload_length = 0;
+
+		for(int i = 0; i < extended; ++i)
+		{
+			payload_length <<= 8;
+			payload_length |= static_cast<byte>(*p++);
+		}
+
+		if(PayloadSizeExtraWord == extended && PayloadSizeDefault >= payload_length)
+		{
+			reason = "The size of bytes used to encode payload length are not sufficient.";
+			return Error;
+		}
+
+		if(PayloadSizeExtraQWord == extended && 0xFFFF >= payload_length)
+		{
+			reason = "The size of bytes used to encode payload length are not sufficient.";
+			return Error;
+		}
+
+		size_t mask_key_length = MAX_PAYLOAD_LENGTH;
+	}
 
 	target.final = first & Frame::FinalBit;
 	target.rsv1 = first & Frame::ReservedBit1;
