@@ -69,13 +69,13 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 
 		if(PayloadSizeExtraWord == extended && PayloadSizeDefault >= payload_length)
 		{
-			reason = "The size of bytes used to encode payload length are not sufficient.";
+			reason = "The bytes used to encode payload length are not sufficient.";
 			return Error;
 		}
 
 		if(PayloadSizeExtraQWord == extended && 0xFFFF >= payload_length)
 		{
-			reason = "The size of bytes used to encode payload length are not sufficient.";
+			reason = "The bytes used to encode payload length are not sufficient.";
 			return Error;
 		}
 
