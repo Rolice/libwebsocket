@@ -208,8 +208,8 @@ void WebSocket::Listen(bool x)
 
 		while(m_running && (in = recv(m_client, &buffer, max, 0)))
 		{
-			struct Frame *frame;
-			//int result = Frame::Parse(buffer, sizeof(buffer), frame, "ASDASD", "Test");
+			struct Frame frame;
+			Frame::ParseResult result = Frame::Parse(buffer, sizeof(buffer), frame, "ASDASD", "Test");
 
 			std::string message(buffer);
 			Process(message);

@@ -3,12 +3,13 @@
 
 #include "include/global.hpp"
 
+#include "Util.hpp"
+
 #include <string>
 #include <vector>
+#include <limits>
 
 #include <inttypes.h>
-
-#define MAX_PAYLOAD_LENGTH             0x7FFFFFFFFFFFFFFF;
 
 typedef unsigned int                   FrameMask;
 
@@ -31,6 +32,8 @@ struct Frame
 	static const int PayloadSizeDefault = 125;
 	static const int PayloadSizeExtraWord = 126;
 	static const int PayloadSizeExtraQWord = 127;
+
+	static const uint64_t MaxPayloadSize = 0x7FFFFFFFFFFFFFFF;
 
 	// RFC 6455 OpCodes
 	enum Type
