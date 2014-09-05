@@ -11,12 +11,7 @@ class Util
 {
 public:
 	template<typename T>
-	static std::string ToString(const T &value)
-	{
-		std::ostringstream stream;
-		stream << value;
-		return stream.str();
-	}
+	static std::string ToString(const T &value);
 };
 
 }
