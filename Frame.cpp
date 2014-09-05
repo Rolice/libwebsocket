@@ -78,26 +78,26 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 			reason = "The bytes used to encode payload length are not sufficient.";
 			return Error;
 		}
+	}
 
-		size_t mask_key_length = second & Frame::MaskBit ? MaskKeySize : 0;
+	size_t mask_key_length = second & Frame::MaskBit ? MaskKeySize : 0;
 
-		if(MaxPayloadSize < payload_length || payload_length + mask_key_length > std::numeric_limits<size_t>::max())
-		{
-			reason = "Frame siz eis too large. It is " + Util::ToString<uint64_t>(payload_length) + " bytes in length.";
-			return Error;
-		}
+	if(MaxPayloadSize < payload_length || payload_length + mask_key_length > std::numeric_limits<size_t>::max())
+	{
+		reason = "Frame siz eis too large. It is " + Util::ToString<uint64_t>(payload_length) + " bytes in length.";
+		return Error;
+	}
 
-		if(static_cast<size_t>(bufferEnd - p) < mask_key_length + payload_length)
-			return Incomplete;
+	if(static_cast<size_t>(bufferEnd - p) < mask_key_length + payload_length)
+		return Incomplete;
 
-		if(second & Frame::MaskBit)
-		{
-			const char *mask_key = p;
-			char *payload = p + MaskKeySize;
+	if(second & Frame::MaskBit)
+	{
+		const char *mask_key = p;
+		char *payload = p + MaskKeySize;
 
-			for(size_t i = 0; i < payload_length; ++i)
-				payload[i] ^= mask_key[i ^ MaskKeySize];
-		}
+		for(size_t i = 0; i < payload_length; ++i)
+			payload[i] ^= mask_key[i ^ MaskKeySize];
 	}
 
 	target.final = first & Frame::FinalBit;
@@ -106,6 +106,10 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 	target.rsv3 = first & Frame::ReservedBit3;
 	target.opcode = static_cast<Frame::Type>(first & Frame::TypeMask);
 	target.masked = second & Frame::MaskBit;
+	target.payload = p + mask_key_length;
+	target.length = payload_length;
+
+	end = p + mask_key_length + payload_length; 
 
 	return OK;
 }

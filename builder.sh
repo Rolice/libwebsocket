@@ -3,7 +3,7 @@
 STARTTIME=$(date +%s)
 PROJECTDIR=`pwd`
 
-g++ -fPIC -shared -o $PROJECTDIR/bin/libwebsocket.so                          \
+g++ -fPIC -shared -g -o $PROJECTDIR/bin/libwebsocket.so                   \
 	$PROJECTDIR/include/base64/base64.cpp                                 \
 	$PROJECTDIR/include/sha1/sha1.cpp                                     \
 	$PROJECTDIR/*.cpp                                                     \

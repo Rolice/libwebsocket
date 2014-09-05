@@ -203,20 +203,31 @@ void WebSocket::Listen(bool x)
 		Handshake();
 
 		int in = 0;
-		int max = 65535;
-		char buffer[max];
+		int buffer_length = 512;
+		char buffer[buffer_length];
 
-		while(m_running && (in = recv(m_client, &buffer, max, 0)))
+		while(0 != (in = recv(m_client, &buffer, buffer_length, 0)))
 		{
+			char *end;
+			std::string reason;
 			struct Frame frame;
-			Frame::ParseResult result = Frame::Parse(buffer, sizeof(buffer), frame, "ASDASD", "Test");
-
-			std::string message(buffer);
-			Process(message);
+			Frame::ParseResult result = Frame::Parse(buffer, sizeof(buffer), frame, end, reason); 
 
 			memset(&buffer, 0, sizeof(buffer));
+
+			Debug::Warn(frame.payload);
+
+			if(NULL == frame.payload)
+				continue;
+
+			std::string message(frame.payload);
+			Process(message);
 		}
+
+		Debug::Warn("Receiving ended.");
 	}
+
+	Debug::Warn("Connection acception ended.");
 }
 
 void WebSocket::Process(std::string message)
