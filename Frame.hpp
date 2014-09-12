@@ -11,6 +11,8 @@
 
 #include <inttypes.h>
 
+#include <assert.h>
+
 typedef unsigned int                   FrameMask;
 
 namespace ws
@@ -96,8 +98,10 @@ struct Frame
 
 	Frame();
 	Frame(Type opcode, bool final, bool masked, const char *payload, size_t length);
-	void MakeData(std::vector<char> &data);
 
+	void Data(std::vector<byte> &data);
+	
+	static void Append(const Frame &target, std::vector<byte> &data);
 };
 
 }

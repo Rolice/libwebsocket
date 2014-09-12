@@ -3,12 +3,34 @@
 namespace ws
 {
 
-template<typename T>
-std::string Util::ToString(const T &value)
+// template<typename T>
+// std::string Util::ToString(const T &value)
+// {
+// 	std::ostringstream stream;
+// 	stream << value;
+// 	return stream.str();
+// }
+
+byte *Util::Random(unsigned int length)
 {
-	std::ostringstream stream;
-	stream << value;
-	return stream.str();
+	byte *result = (byte *) malloc(length);
+
+	if(!result)
+		return NULL;
+
+	for(unsigned int i = 0; i < length; i++)
+		result[i] = rand();
+
+	return result;
+}
+
+void Util::Random(byte *target, unsigned int length)
+{
+	if(!target)
+		return;
+
+	for(unsigned int i = 0; i < length; i++)
+		target[i] = rand();
 }
 
 }

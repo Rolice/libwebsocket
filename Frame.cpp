@@ -52,7 +52,7 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 
 	uint64_t payload_length = second & PayloadLengthMask;
 
-	if(PayloadSizeDefault <  payload_length)
+	if(PayloadSizeDefault < payload_length)
 	{
 		int extended = PayloadSizeExtraWord == length ? 2 : 8;
 
@@ -84,7 +84,7 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 
 	if(MaxPayloadSize < payload_length || payload_length + mask_key_length > std::numeric_limits<size_t>::max())
 	{
-		reason = "Frame siz eis too large. It is " + Util::ToString<uint64_t>(payload_length) + " bytes in length.";
+		reason = "Frame size is too large. It is " + Util::ToString<uint64_t>(payload_length) + " bytes in length.";
 		return Error;
 	}
 
@@ -97,7 +97,7 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 		char *payload = p + MaskKeySize;
 
 		for(size_t i = 0; i < payload_length; ++i)
-			payload[i] ^= mask_key[i ^ MaskKeySize];
+			payload[i] ^= mask_key[i % MaskKeySize];
 	}
 
 	target.final = first & Frame::FinalBit;
@@ -109,9 +109,70 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 	target.payload = p + mask_key_length;
 	target.length = payload_length;
 
-	end = p + mask_key_length + payload_length; 
+	end = p + mask_key_length + payload_length;
 
 	return OK;
+}
+
+void Frame::Data(std::vector<byte> &data)
+{
+	assert(!(opcode & ~TypeMask));
+
+	data.resize(2);
+	data.at(0) = (final ? FinalBit : 0) | (rsv1 ? ReservedBit1 : 0) | opcode;
+	data.at(1) = masked ? MaskBit : 0;
+
+	if(PayloadSizeDefault >= length)
+		data.at(1) |= length;
+	else if(0xFFFF >= length)
+	{
+		data.at(1) |= PayloadSizeExtraWord;
+
+		data.push_back((length & 0xFFFF) >> 8);
+		data.push_back((length & 0xFF));
+	}
+	else
+	{
+		data.at(1) |= PayloadSizeExtraQWord;
+		byte ext[8];
+		size_t remaining = length;
+
+		for(size_t i = 0; i < sizeof(ext); i++)
+		{
+			ext[7- i] = remaining & 0xFF;
+			remaining >>= 8;
+		}
+
+		assert(!remaining);
+
+		data.push_back(*ext);
+	}
+
+	Append(*this, data);
+}
+
+void Frame::Append(const Frame &target, std::vector<byte> &data)
+{
+	size_t mask_key_start = 0;
+
+	if(target.masked)
+	{
+		mask_key_start = data.size();
+		data.resize(data.size() + MaskKeySize);
+	}
+
+	size_t payload_start = data.size();
+
+	for(size_t i = 0; i < target.length; i++)
+		data.push_back(*(target.payload + i));
+
+	if(target.masked)
+	{
+		Util::Random(data.data() + mask_key_start, MaskKeySize);
+
+		for(size_t i = 0; i < target.length; i++)
+			data[payload_start + i] ^= data[mask_key_start + i % MaskKeySize];
+	}
 }
 
 }

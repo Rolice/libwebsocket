@@ -187,7 +187,7 @@ void WebSocket::Listen()
 	while(m_running && (in = recv(m_client, &buffer, max , 0)))
 	{
 		std::string message(buffer);
-		Process(message);
+		Receive(message);
 	}
 }
 
@@ -199,6 +199,8 @@ void WebSocket::Listen(bool x)
 
 	while(m_running && 0 <= (m_client = accept(m_server, (struct sockaddr *) m_client_addr, (socklen_t *) &client_len)))
 	{
+		Debug::Warn("Client Connected");
+
 		ParseHandshake();
 		Handshake();
 
@@ -215,24 +217,34 @@ void WebSocket::Listen(bool x)
 
 			memset(&buffer, 0, sizeof(buffer));
 
-			Debug::Warn(frame.payload);
-
 			if(NULL == frame.payload)
 				continue;
 
 			std::string message(frame.payload);
-			Process(message);
+			Receive(message);
+
+			Send("You there, gocha!");
 		}
 
-		Debug::Warn("Receiving ended.");
+		Debug::Warn("Client Disconnected");
 	}
 
-	Debug::Warn("Connection acception ended.");
+	Debug::Warn("Server Closed");
 }
 
-void WebSocket::Process(std::string message)
+void WebSocket::Receive(std::string message)
 {
-	std::cout << message << std::endl << std::endl;
+	std::cout << "MS: " << message << "ME." << std::endl << std::endl;
+}
+
+void WebSocket::Send(std::string message)
+{
+	struct Frame response(static_cast<Frame::Type>(Frame::TEXT), true, false, message.c_str(), (size_t) message.size());
+	std::vector<byte> data;
+
+	response.Data(data);
+
+	write(m_client, data.data(), data.size());
 }
 
 void WebSocket::Stop()

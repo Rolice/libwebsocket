@@ -60,7 +60,9 @@ public:
 
 	virtual void Listen();
 	virtual void Listen(bool x);
-	virtual void Process(std::string message);
+
+	virtual void Receive(std::string message);
+	virtual void Send(std::string message);
 	
 	void Stop();
 };
