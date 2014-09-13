@@ -54,7 +54,6 @@ protected:
 
 public:
 	WebSocket();
-	WebSocket(int server, struct sockaddr_in *server_addr, int client, struct sockaddr_in *client_addr);
 	virtual ~WebSocket();
 
 	std::string AcceptKey();

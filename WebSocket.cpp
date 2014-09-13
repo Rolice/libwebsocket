@@ -49,42 +49,6 @@ WebSocket::WebSocket()
 	m_running = true;
 }
 
-WebSocket::WebSocket(int server, struct sockaddr_in *server_addr, int client, struct sockaddr_in *client_addr)
-{
-	m_running = false;
-
-	m_server = server;
-	m_client = client;
-
-	m_server_addr = server_addr;
-	m_client_addr = client_addr;
-
-	char request[65535];
-	int request_length = 0;
-
-	memset(request, 0, sizeof(request));
-
-	request_length = read(m_client, request, sizeof(request));
-
-	if(0 >= request_length)
-	{
-		Debug::Warn("Request with no data ignored.");
-		return;
-	}
-
-	Request *req = new Request(request);
-
-	m_host = req->GetHeader("Host");
-	m_origin = req->GetHeader("Origin");
-	m_protocol = req->GetHeader("Sec-WebSocket-Protocol");
-	m_key = req->GetHeader("Sec-WebSocket-Key");
-	m_accept = AcceptKey();
-
-	Debug::Info("Handshake received.");
-
-	m_running = true;
-}
-
 WebSocket::~WebSocket()
 {
 	m_running = false;
@@ -187,6 +151,7 @@ void WebSocket::Listen()
 	while(m_running && 0 <= (m_client = accept(m_server, (struct sockaddr *) m_client_addr, (socklen_t *) &client_len)))
 	{
 		Debug::Warn("Client Connected");
+		CallbackManager::Trigger(CT_CONNECTED);
 
 		ParseHandshake();
 		Handshake();

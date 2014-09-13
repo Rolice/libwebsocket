@@ -2,6 +2,7 @@
 #define __CALLBACK_HPP__
 
 #include "Frame.hpp"
+#include "Debug.hpp"
 
 #include <map>
 #include <string>
@@ -43,15 +44,9 @@ struct CallbackInfo
 	}
 };
 
-typedef std::pair<CallbackHandle, CallbackInfo> ConnectedCallbackItem;
-typedef std::pair<CallbackHandle, CallbackInfo> DisconnectedCallbackItem;
-typedef std::pair<CallbackHandle, CallbackInfo> FrameCallbackItem;
-typedef std::pair<CallbackHandle, CallbackInfo> MessageCallbackItem;
-
-typedef std::map<CallbackHandle, CallbackInfo> ConnectedCallbackCollection;
-typedef std::map<CallbackHandle, CallbackInfo> DisconnectedCallbackCollection;
-typedef std::map<CallbackHandle, CallbackInfo> FrameCallbackCollection;
-typedef std::map<CallbackHandle, CallbackInfo> MessageCallbackCollection;
+typedef std::map<int, CallbackInfo> CallbackCollection;
+typedef std::map<int, CallbackInfo>::iterator CallbackCollectionIterator;
+typedef std::pair<int, CallbackInfo> CallbackItem;
 
 struct ClientInfo
 {
@@ -62,27 +57,25 @@ struct ClientInfo
 class CallbackManager
 {
 private:
-	ConnectedCallbackCollection m_connected_collection;
-	DisconnectedCallbackCollection m_disconnected_collection;
-	FrameCallbackCollection m_frame_collection;
-	MessageCallbackCollection m_message_collection;
+	static CallbackCollection m_collection;
 
-	CallbackHandle Generate();
-	CallbackHandle Generate(int priority);
+	static CallbackHandle Generate();
 
 public:
 	static const int DefaultPriority = 50;
 
-	CallbackHandle RegisterCallback(ConnectedCallback callback);
-	CallbackHandle RegisterCallback(ConnectedCallback callback, int priority);
-	CallbackHandle RegisterCallback(DisconnectedCallback callback);
-	CallbackHandle RegisterCallback(DisconnectedCallback callback, int priority);
-	CallbackHandle RegisterCallback(FrameCallback callback);
-	CallbackHandle RegisterCallback(FrameCallback callback, int priority);
-	CallbackHandle RegisterCallback(MessageCallback callback);
-	CallbackHandle RegisterCallback(MessageCallback callback, int priority);
+	static CallbackHandle RegisterCallback(ConnectedCallback callback);
+	static CallbackHandle RegisterCallback(ConnectedCallback callback, int priority);
+	static CallbackHandle RegisterCallback(DisconnectedCallback callback);
+	static CallbackHandle RegisterCallback(DisconnectedCallback callback, int priority);
+	static CallbackHandle RegisterCallback(FrameCallback callback);
+	static CallbackHandle RegisterCallback(FrameCallback callback, int priority);
+	static CallbackHandle RegisterCallback(MessageCallback callback);
+	static CallbackHandle RegisterCallback(MessageCallback callback, int priority);
 
-	void UnregisterCallback(CallbackHandle handle);
+	static void UnregisterCallback(CallbackHandle handle);
+
+	static void Trigger(CallbackType type);
 };
 
 }
