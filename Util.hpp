@@ -32,7 +32,9 @@ public:
 	}
 
 	static byte *Random(unsigned int length);
+	static void *RandomRaw(unsigned int length);
 	static void Random(byte *target, unsigned int length);
+	static void RandomRaw(void *target, unsigned int length);
 };
 
 }

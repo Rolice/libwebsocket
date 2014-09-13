@@ -11,6 +11,7 @@
 #include "Request.hpp"
 
 #include "Frame.hpp"
+#include "Callback.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -46,22 +47,21 @@ protected:
 	std::string m_key;
 	std::string m_accept;
 
+	void ParseHandshake();
+	virtual void Handshake();
+
+	virtual void Receive(std::string message);
+
 public:
 	WebSocket();
 	WebSocket(int server, struct sockaddr_in *server_addr, int client, struct sockaddr_in *client_addr);
 	virtual ~WebSocket();
 
-	void ParseHandshake();
-
 	std::string AcceptKey();
 	std::string AcceptKey(std::string original);
 
-	virtual void Handshake();
-
 	virtual void Listen();
-	virtual void Listen(bool x);
 
-	virtual void Receive(std::string message);
 	virtual void Send(std::string message);
 	
 	void Stop();

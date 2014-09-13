@@ -180,19 +180,6 @@ void WebSocket::ParseHandshake()
 
 void WebSocket::Listen()
 {
-	int in = 0;
-	int max = 65535;
-	char buffer[max];
-
-	while(m_running && (in = recv(m_client, &buffer, max , 0)))
-	{
-		std::string message(buffer);
-		Receive(message);
-	}
-}
-
-void WebSocket::Listen(bool x)
-{
 	int client_len = sizeof(struct sockaddr_in);
 
 	listen(m_server, SOCK_BACKLOG);

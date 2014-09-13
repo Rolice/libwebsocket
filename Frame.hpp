@@ -13,8 +13,6 @@
 
 #include <assert.h>
 
-typedef unsigned int                   FrameMask;
-
 namespace ws
 {
 
