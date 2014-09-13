@@ -151,7 +151,12 @@ void WebSocket::Listen()
 	while(m_running && 0 <= (m_client = accept(m_server, (struct sockaddr *) m_client_addr, (socklen_t *) &client_len)))
 	{
 		Debug::Warn("Client Connected");
-		CallbackManager::Trigger(CT_CONNECTED);
+
+		ClientInfo info;
+		info.descriptor = m_client;
+		info.address = *m_client_addr;
+
+		CallbackManager::Trigger(CT_CONNECTED, info, m_key.c_str());
 
 		ParseHandshake();
 		Handshake();
@@ -169,16 +174,21 @@ void WebSocket::Listen()
 
 			memset(&buffer, 0, sizeof(buffer));
 
+			CallbackManager::Trigger(CT_FRAME, info, buffer);
+
 			if(NULL == frame.payload)
 				continue;
 
 			std::string message(frame.payload);
 			Receive(message);
 
+			CallbackManager::Trigger(CT_MESSAGE, info, message.c_str());
+
 			Send("You there, gocha!");
 		}
 
 		Debug::Warn("Client Disconnected");
+		CallbackManager::Trigger(CT_DISCONNECTED, info);
 	}
 
 	Debug::Warn("Server Closed");

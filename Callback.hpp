@@ -4,6 +4,8 @@
 #include "Frame.hpp"
 #include "Debug.hpp"
 
+#include <stdarg.h>
+
 #include <map>
 #include <string>
 
@@ -21,11 +23,11 @@ enum CallbackType
 	CT_MESSAGE
 };
 
-typedef void (*ConnectedCallback)(struct ClientInfo &info, std::string handshake_key);
+typedef void (*ConnectedCallback)(struct ClientInfo &info, char *handshake_key);
 typedef void (*DisconnectedCallback)(struct ClientInfo &info);
 
-typedef void (*FrameCallback)(struct ClientInfo &info, ws::Frame &frame);
-typedef void (*MessageCallback)(struct ClientInfo &info, std::string &message);
+typedef void (*FrameCallback)(struct ClientInfo &info, ws::Frame *frame);
+typedef void (*MessageCallback)(struct ClientInfo &info, char *message, size_t length);
 
 typedef unsigned int CallbackHandle;
 
@@ -75,7 +77,8 @@ public:
 
 	static void UnregisterCallback(CallbackHandle handle);
 
-	static void Trigger(CallbackType type);
+	static void Trigger(CallbackType type, ClientInfo info, ...);
+
 };
 
 }

@@ -98,8 +98,11 @@ void CallbackManager::UnregisterCallback(CallbackHandle handle)
 
 }
 
-void CallbackManager::Trigger(CallbackType type)
+void CallbackManager::Trigger(CallbackType type, ClientInfo info, ...)
 {
+	va_list args;
+	va_start(args, info);
+
 	for(CallbackCollectionIterator it = m_collection.begin(); it != m_collection.end(); ++it)
 	{
 		if(type != it->second.type)
@@ -108,20 +111,38 @@ void CallbackManager::Trigger(CallbackType type)
 		switch(type)
 		{
 			case CT_CONNECTED:
-				(ConnectedCallback) it->second.callback;
+			{
+				ConnectedCallback callback = (ConnectedCallback) it->second.callback;
+				callback(info, va_arg(args, char *));
+
 				break;
+			}
 			case CT_DISCONNECTED:
+			{
+				DisconnectedCallback callback = (DisconnectedCallback) it->second.callback;
+				callback(info);
 
 				break;
+			}
 			case CT_FRAME:
+			{
+				FrameCallback callback = (FrameCallback) it->second.callback;
+				callback(info, va_arg(args, ws::Frame*));
 
 				break;
+			}
 			case CT_MESSAGE:
+			{
+				MessageCallback callback = (MessageCallback) it->second.callback;
+				callback(info, va_arg(args, char *), va_arg(args, size_t));
 
 				break;
+			}
 			default:
+			{
 				Debug::Warn("Unknown Callback Invoked");
 				break;
+			}
 		}
 	}
 }
