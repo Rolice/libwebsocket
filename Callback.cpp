@@ -3,6 +3,8 @@
 namespace ws
 {
 
+CallbackCollection CallbackManager::m_collection;
+
 CallbackHandle CallbackManager::Generate()
 {
 	CallbackHandle result = 0;

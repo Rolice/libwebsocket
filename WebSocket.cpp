@@ -148,13 +148,17 @@ void WebSocket::Listen()
 
 	listen(m_server, SOCK_BACKLOG);
 
-	while(m_running && 0 <= (m_client = accept(m_server, (struct sockaddr *) m_client_addr, (socklen_t *) &client_len)))
+	struct sockaddr_in client_addr;
+
+	memset(&client_addr, 0, sizeof(client_addr));
+
+	while(m_running && 0 <= (m_client = accept(m_server, (struct sockaddr *) &client_addr, (socklen_t *) &client_len)))
 	{
 		Debug::Warn("Client Connected");
 
 		ClientInfo info;
 		info.descriptor = m_client;
-		info.address = *m_client_addr;
+		info.address = client_addr;
 
 		CallbackManager::Trigger(CT_CONNECTED, info, m_key.c_str());
 
@@ -179,7 +183,7 @@ void WebSocket::Listen()
 			if(NULL == frame.payload)
 				continue;
 
-			std::string message(frame.payload);
+			std::string message = frame.payload;
 			Receive(message);
 
 			CallbackManager::Trigger(CT_MESSAGE, info, message.c_str());

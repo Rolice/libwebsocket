@@ -37,7 +37,10 @@ struct CallbackInfo
 	CallbackHandle handle;
 	void *callback;
 
-	CallbackInfo();
+	CallbackInfo()
+	{
+	}
+
 	CallbackInfo(CallbackType type, CallbackHandle handle, void (*callback)())
 	{
 		type = type;
@@ -46,21 +49,21 @@ struct CallbackInfo
 	}
 };
 
-typedef std::map<int, CallbackInfo> CallbackCollection;
-typedef std::map<int, CallbackInfo>::iterator CallbackCollectionIterator;
-typedef std::pair<int, CallbackInfo> CallbackItem;
-
 struct ClientInfo
 {
 	int descriptor;
 	struct sockaddr_in address;
 };
 
+typedef std::map<int, CallbackInfo> CallbackCollection;
+typedef std::map<int, CallbackInfo>::iterator CallbackCollectionIterator;
+typedef std::pair<int, CallbackInfo> CallbackItem;
+
 class CallbackManager
 {
 private:
 	static CallbackCollection m_collection;
-
+	
 	static CallbackHandle Generate();
 
 public:
