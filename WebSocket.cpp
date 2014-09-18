@@ -183,7 +183,7 @@ void WebSocket::Listen()
 			if(NULL == frame.payload)
 				continue;
 
-			//CallbackManager::Trigger(CT_MESSAGE, info, frame.payload);
+			CallbackManager::Trigger(CT_MESSAGE, info, frame.payload);
 		}
 
 		Debug::Warn("Client Disconnected");
