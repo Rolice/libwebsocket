@@ -13,6 +13,11 @@ Current Status
 
 The library now can make successful handshake with the clients and it can respond to messages. As it is still in experimental phase it is not directly usable. See the road map below.
 
+Example Code
+------------
+
+The experimental server is now also added here in github, but in additional repo: [libwebsocket-server](https://github.com/Rolice/libwebsocket-server).
+
 Simple Roadmap
 --------------
 
