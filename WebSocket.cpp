@@ -178,17 +178,12 @@ void WebSocket::Listen()
 
 			memset(&buffer, 0, sizeof(buffer));
 
-			CallbackManager::Trigger(CT_FRAME, info, buffer);
+			CallbackManager::Trigger(CT_FRAME, info, &frame);
 
 			if(NULL == frame.payload)
 				continue;
 
-			std::string message = frame.payload;
-			Receive(message);
-
-			CallbackManager::Trigger(CT_MESSAGE, info, message.c_str());
-
-			Send("You there, gocha!");
+			//CallbackManager::Trigger(CT_MESSAGE, info, frame.payload);
 		}
 
 		Debug::Warn("Client Disconnected");
@@ -196,11 +191,6 @@ void WebSocket::Listen()
 	}
 
 	Debug::Warn("Server Closed");
-}
-
-void WebSocket::Receive(std::string message)
-{
-	std::cout << "MS: " << message << "ME." << std::endl << std::endl;
 }
 
 void WebSocket::Send(std::string message)

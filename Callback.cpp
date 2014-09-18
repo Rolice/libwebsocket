@@ -128,15 +128,20 @@ void CallbackManager::Trigger(CallbackType type, ClientInfo info, ...)
 			}
 			case CT_FRAME:
 			{
+				Frame *frame = va_arg(args, Frame *);
+
 				FrameCallback callback = (FrameCallback) it->second.callback;
-				callback(info, va_arg(args, ws::Frame*));
+				callback(info, frame);
 
 				break;
 			}
 			case CT_MESSAGE:
 			{
+				char *message = va_arg(args, char *);
+				size_t length = va_arg(args, size_t);
+
 				MessageCallback callback = (MessageCallback) it->second.callback;
-				callback(info, va_arg(args, char *), va_arg(args, size_t));
+				callback(info, message, length);
 
 				break;
 			}

@@ -91,14 +91,22 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 	if(static_cast<size_t>(bufferEnd - p) < mask_key_length + payload_length)
 		return Incomplete;
 
+	//if(!target.payload)
+	target.payload = (char *) malloc(payload_length + 1);
+	memset(target.payload, 0, payload_length);
+
 	if(second & Frame::MaskBit)
 	{
 		const char *mask_key = p;
 		char *payload = p + MaskKeySize;
 
-		for(size_t i = 0; i < payload_length; ++i)
+		for(size_t i = 0; i < payload_length; ++i) {
 			payload[i] ^= mask_key[i % MaskKeySize];
+			target.payload[i] = payload[i];
+		}
 	}
+
+	target.payload[payload_length] = '\0';
 
 	target.final = first & Frame::FinalBit;
 	target.rsv1 = first & Frame::ReservedBit1;
@@ -106,7 +114,6 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 	target.rsv3 = first & Frame::ReservedBit3;
 	target.opcode = static_cast<Frame::Type>(first & Frame::TypeMask);
 	target.masked = second & Frame::MaskBit;
-	target.payload = p + mask_key_length;
 	target.length = payload_length;
 
 	end = p + mask_key_length + payload_length;

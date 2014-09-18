@@ -55,8 +55,8 @@ struct ClientInfo
 	struct sockaddr_in address;
 };
 
-typedef std::map<int, CallbackInfo> CallbackCollection;
-typedef std::map<int, CallbackInfo>::iterator CallbackCollectionIterator;
+typedef std::multimap<int, CallbackInfo> CallbackCollection;
+typedef std::multimap<int, CallbackInfo>::iterator CallbackCollectionIterator;
 typedef std::pair<int, CallbackInfo> CallbackItem;
 
 class CallbackManager

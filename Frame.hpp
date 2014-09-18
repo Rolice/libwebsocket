@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <cstring>
 
 #include <inttypes.h>
 
@@ -81,7 +82,7 @@ struct Frame
 	bool masked                        : 1;
 	unsigned short length              : 7;
 
-	unsigned short extended            : 16;
+	long extended                      : 64;
 
 	char *payload;
 

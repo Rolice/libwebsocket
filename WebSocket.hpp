@@ -50,8 +50,6 @@ protected:
 	void ParseHandshake();
 	virtual void Handshake();
 
-	virtual void Receive(std::string message);
-
 public:
 	WebSocket();
 	virtual ~WebSocket();
