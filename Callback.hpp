@@ -25,7 +25,6 @@ enum CallbackType
 
 typedef void (*ConnectedCallback)(struct ClientInfo &info, char *handshake_key);
 typedef void (*DisconnectedCallback)(struct ClientInfo &info);
-
 typedef void (*FrameCallback)(struct ClientInfo &info, ws::Frame *frame);
 typedef void (*MessageCallback)(struct ClientInfo &info, char *message, size_t length);
 
