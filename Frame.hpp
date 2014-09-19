@@ -82,7 +82,7 @@ struct Frame
 	bool masked                        : 1;
 	unsigned short length              : 7;
 
-	long extended                      : 64;
+	int extended;
 
 	char *payload;
 

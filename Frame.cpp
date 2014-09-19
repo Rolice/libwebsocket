@@ -78,6 +78,8 @@ Frame::ParseResult Frame::Parse(char *data, size_t length, Frame &target, const 
 			reason = "The bytes used to encode payload length are not sufficient.";
 			return Error;
 		}
+
+		target.extended = extended;
 	}
 
 	size_t mask_key_length = second & Frame::MaskBit ? MaskKeySize : 0;
