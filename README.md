@@ -6,7 +6,7 @@ Experimental C++ WebSocket Server Library
 
 The library was originally developed and tested on *Raspberry Pi*. Now it is developed on desktop machine and will be back-ported.
 
-**Update:** The library was a part of a application project for Raspberry and later it was separated. It is now confirmed that it is running nicely under Raspberry again with about **0% CPU load** and **0.3% memory consumption** (Raspberry Pi).
+**Update:**  It is now confirmed that it is running nicely under Raspberry when back-ported again with about **0% CPU load** and **0.3% memory consumption** (Raspberry Pi).
 
 It is still experimental and in process of implementation against [**RFC 6455**](http://tools.ietf.org/html/rfc6455).
 
