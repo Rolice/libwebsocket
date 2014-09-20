@@ -4,7 +4,9 @@ libwebsocket
 Experimental C++ WebSocket Server Library
 
 
-The library was originally developed and tested on *Raspberry Pi*. Now it is developed on desktop machine and it is back-ported periodically. So far it works nicely under **Raspberry Pi** with about **0% CPU load** and **0.3% memory consumption**. These stats may vary on other hardware or if the system has additional, third-party software installed.
+The library was originally developed and tested on *Raspberry Pi*. Now it is developed on desktop machine and it is back-ported periodically. So far it works nicely under **Raspberry Pi** with about **0% CPU load** and **0.3% memory consumption** with the testing server application [libwebsocket-server](https://github.com/Rolice/libwebsocket-server). These stats are relative, but they clearly represent the low resource usage.
+
+**Note**: These stats may vary on other hardware; if the system has additional, third-party software installed or the library is used in other, more complex server application.
 
 It is still experimental and in process of implementation against [**RFC 6455**](http://tools.ietf.org/html/rfc6455).
 
