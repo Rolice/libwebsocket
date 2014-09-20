@@ -39,4 +39,4 @@ Here are some repositories I have inspected and borrowed some ideas, code or pur
 * https://github.com/katzarsky/WebSocket
 * https://github.com/WebKit/webkit
 
-The library was a part of a application project for Raspberry and later it was separated. It is now confirmed that it is running nicely under Raspberry again with about 0% CPU load and 0.3% Memory Consumption (Raspberry Pi).
+The library was a part of a application project for Raspberry and later it was separated. It is now confirmed that it is running nicely under Raspberry again with about **0% CPU load** and **0.3% memory consumption** (Raspberry Pi).
